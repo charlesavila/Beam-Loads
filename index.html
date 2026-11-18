@@ -360,7 +360,7 @@
 
     .metric:nth-child(2n) { background: #fff6c7; }
 
-    .metric span {
+    .metric > span {
       display: block;
       margin-bottom: 8px;
       font-family: Impact, "Arial Black", fantasy;
@@ -595,16 +595,16 @@
         <div class="card beam-card">
           <h2 class="section-title">Beam diagram</h2>
           <div class="beam-wrap">
-            <svg viewBox="0 0 760 230" role="img" aria-label="Simply supported beam with a point load and uniform load">
+            <svg id="beam-diagram" viewBox="0 0 760 230" role="img" aria-label="Simply supported beam with loads">
               <g fill="none" stroke="#241438" stroke-width="3">
                 <line x1="70" y1="95" x2="690" y2="95"/>
                 <line x1="70" y1="82" x2="70" y2="108"/>
                 <line x1="690" y1="82" x2="690" y2="108"/>
               </g>
               <g fill="#72b7ff" stroke="#241438" stroke-width="3">
-                <circle cx="70" cy="119" r="18"/>
+                <circle id="left-support-circle" cx="70" cy="119" r="18"/>
                 <circle cx="70" cy="119" r="5" fill="#ffe66d"/>
-                <path d="M690 108 L675 138 L705 138 Z"/>
+                <path id="right-support-triangle" d="M690 108 L675 138 L705 138 Z"/>
               </g>
               <g fill="#63ddaa" stroke="#241438" stroke-width="3">
                 <rect x="70" y="82" width="620" height="26" rx="13"/>
@@ -643,53 +643,53 @@
           <div class="summary-grid">
             <div class="metric">
               <span>Left reaction</span>
-              <strong>13.20 kips</strong>
+              <strong id="left-reaction">13.20 kips</strong>
               <small>At 0.00 ft</small>
             </div>
             <div class="metric">
               <span>Right reaction</span>
-              <strong>10.80 kips</strong>
+              <strong id="right-reaction">10.80 kips</strong>
               <small>At 20.00 ft</small>
             </div>
             <div class="metric">
               <span>Maximum shear</span>
-              <strong>13.20 kips</strong>
+              <strong id="maximum-shear">13.20 kips</strong>
               <small>At 0.00 ft</small>
             </div>
             <div class="metric">
               <span>Maximum moment</span>
-              <strong>78.40 kip-ft</strong>
+              <strong id="maximum-moment">78.40 kip-ft</strong>
               <small>At 8.00 ft</small>
             </div>
             <div class="metric">
               <span>Maximum deflection</span>
-              <strong>0.728 in</strong>
-              <small>At 9.20 ft</small>
+              <strong id="maximum-deflection">0.728 in</strong>
+              <small id="maximum-deflection-location">At 9.20 ft</small>
             </div>
             <div class="metric">
               <span>Bending stress</span>
-              <strong>28.17 ksi</strong>
-              <small>Allowable: 24.00 ksi</small>
+              <strong id="bending-stress">28.17 ksi</strong>
+              <small id="allowable-stress">Allowable: 24.00 ksi</small>
             </div>
             <div class="metric">
               <span>Deflection limit</span>
-              <strong>0.667 in</strong>
+              <strong id="deflection-limit">0.667 in</strong>
               <small>L / 360</small>
             </div>
             <div class="metric">
               <span>Fixed-end force</span>
-              <strong>—</strong>
-              <small>Simply supported</small>
+              <strong id="fixed-end-force">—</strong>
+              <small id="fixed-end-detail">Simply supported</small>
             </div>
           </div>
           <div class="checks">
             <div class="check">
               <span>Bending check</span>
-              <span class="badge">FAIL</span>
+              <span class="badge" id="bending-check">FAIL</span>
             </div>
             <div class="check">
               <span>Deflection check</span>
-              <span class="badge">FAIL</span>
+              <span class="badge" id="deflection-check">FAIL</span>
             </div>
           </div>
         </div>
@@ -700,7 +700,7 @@
             <div class="plot-card">
               <h3>Shear diagram (kips)</h3>
               <div class="plot-wrap">
-                <svg viewBox="0 0 300 220" role="img" aria-label="Placeholder shear diagram">
+                <svg id="shear-plot" viewBox="0 0 300 220" role="img" aria-label="Shear diagram">
                   <line x1="35" y1="110" x2="280" y2="110" stroke="#241438" stroke-width="1.5"/>
                   <line x1="35" y1="20" x2="35" y2="200" stroke="#241438" stroke-width="1.5"/>
                   <polyline points="35,48 140,48 140,91 260,150 280,150" fill="none" stroke="#ff5daf" stroke-width="5"/>
@@ -720,7 +720,7 @@
             <div class="plot-card">
               <h3>Moment diagram (kip-ft)</h3>
               <div class="plot-wrap">
-                <svg viewBox="0 0 300 220" role="img" aria-label="Placeholder moment diagram">
+                <svg id="moment-plot" viewBox="0 0 300 220" role="img" aria-label="Moment diagram">
                   <line x1="35" y1="170" x2="280" y2="170" stroke="#241438" stroke-width="1.5"/>
                   <line x1="35" y1="20" x2="35" y2="200" stroke="#241438" stroke-width="1.5"/>
                   <path d="M35 170 Q158 30 280 170" fill="rgba(114,183,255,0.45)" stroke="#72b7ff" stroke-width="5"/>
@@ -739,7 +739,7 @@
             <div class="plot-card">
               <h3>Deflection diagram (in)</h3>
               <div class="plot-wrap">
-                <svg viewBox="0 0 300 220" role="img" aria-label="Placeholder deflection diagram">
+                <svg id="deflection-plot" viewBox="0 0 300 220" role="img" aria-label="Deflection diagram">
                   <line x1="35" y1="65" x2="280" y2="65" stroke="#241438" stroke-width="1.5"/>
                   <line x1="35" y1="20" x2="35" y2="200" stroke="#241438" stroke-width="1.5"/>
                   <path d="M35 65 Q158 188 280 65" fill="rgba(255,230,109,0.6)" stroke="#ff9f43" stroke-width="5"/>
@@ -869,7 +869,312 @@
       } else {
         outputStatus.hidden = true;
         outputStatus.textContent = "";
+        analyzeBeam();
       }
+    }
+
+    function getLoadedValues() {
+      const span = Number(document.getElementById("span").value);
+      const pointLoads = Array.from(pointLoadList.querySelectorAll(".load-row")).map((row) => ({
+        magnitude: Number(row.querySelector(".point-magnitude").value),
+        position: Number(row.querySelector(".point-position").value)
+      }));
+      const uniformLoads = Array.from(uniformLoadList.querySelectorAll(".load-row")).map((row) => ({
+        magnitude: Number(row.querySelector(".uniform-magnitude").value),
+        start: Number(row.querySelector(".uniform-start").value),
+        end: Number(row.querySelector(".uniform-end").value)
+      }));
+      return { span, pointLoads, uniformLoads };
+    }
+
+    function positivePart(value) {
+      return value > 0 ? value : 0;
+    }
+
+    function analyzeBeam() {
+      const support = document.getElementById("support").value;
+      const { span, pointLoads, uniformLoads } = getLoadedValues();
+      const isCantilever = support === "Cantilever";
+
+      let leftReaction = 0;
+      let rightReaction = 0;
+      let fixedReaction = 0;
+      let fixedMoment = 0;
+
+      if (isCantilever) {
+        fixedReaction = pointLoads.reduce((sum, load) => sum + load.magnitude, 0);
+        fixedReaction += uniformLoads.reduce((sum, load) => sum + load.magnitude * (load.end - load.start), 0);
+        fixedMoment = pointLoads.reduce((sum, load) => sum + load.magnitude * (span - load.position), 0);
+        fixedMoment += uniformLoads.reduce((sum, load) => {
+          const loadLength = load.end - load.start;
+          const loadCenter = (load.start + load.end) / 2;
+          return sum + load.magnitude * loadLength * (span - loadCenter);
+        }, 0);
+      } else {
+        const totalMoment = pointLoads.reduce((sum, load) => sum + load.magnitude * (span - load.position), 0)
+          + uniformLoads.reduce((sum, load) => {
+            const loadLength = load.end - load.start;
+            const loadCenter = (load.start + load.end) / 2;
+            return sum + load.magnitude * loadLength * (span - loadCenter);
+          }, 0);
+        leftReaction = totalMoment / span;
+        const totalLoad = pointLoads.reduce((sum, load) => sum + load.magnitude, 0)
+          + uniformLoads.reduce((sum, load) => sum + load.magnitude * (load.end - load.start), 0);
+        rightReaction = totalLoad - leftReaction;
+      }
+
+      function shearAt(x) {
+        let shear = isCantilever ? 0 : leftReaction;
+        pointLoads.forEach((load) => {
+          if (x > load.position) shear -= load.magnitude;
+          else if (x === load.position && !isCantilever) shear -= 0;
+        });
+        uniformLoads.forEach((load) => {
+          shear -= load.magnitude * (positivePart(x - load.start) - positivePart(x - load.end));
+        });
+        return shear;
+      }
+
+      function momentAt(x) {
+        let moment = 0;
+        if (!isCantilever) moment += leftReaction * x;
+        pointLoads.forEach((load) => {
+          moment -= load.magnitude * positivePart(x - load.position);
+        });
+        uniformLoads.forEach((load) => {
+          moment -= load.magnitude * (
+            positivePart(x - load.start) ** 2 / 2
+            - positivePart(x - load.end) ** 2 / 2
+          );
+        });
+        return moment;
+      }
+
+      const boundaryPositions = [0, span];
+      pointLoads.forEach((load) => boundaryPositions.push(load.position));
+      uniformLoads.forEach((load) => boundaryPositions.push(load.start, load.end));
+      const xValues = [0];
+      for (let i = 1; i < 1001; i++) xValues.push(span * i / 1000);
+      boundaryPositions.forEach((x) => xValues.push(x));
+      const uniqueX = [...new Set(xValues)].sort((a, b) => a - b);
+
+      let maximumShear = 0;
+      let maximumShearPosition = 0;
+      let maximumMoment = 0;
+      let maximumMomentPosition = 0;
+      const shearValues = uniqueX.map((x) => ({ x, value: shearAt(x) }));
+      const momentValues = uniqueX.map((x) => ({ x, value: momentAt(x) }));
+
+      shearValues.forEach((point) => {
+        if (Math.abs(point.value) > Math.abs(maximumShear)) {
+          maximumShear = point.value;
+          maximumShearPosition = point.x;
+        }
+      });
+      momentValues.forEach((point) => {
+        if (Math.abs(point.value) > Math.abs(maximumMoment)) {
+          maximumMoment = point.value;
+          maximumMomentPosition = point.x;
+        }
+      });
+
+      document.getElementById("left-reaction").textContent = isCantilever
+        ? `${fixedReaction.toFixed(2)} kips`
+        : `${leftReaction.toFixed(2)} kips`;
+      document.getElementById("right-reaction").textContent = isCantilever
+        ? "Fixed support"
+        : `${rightReaction.toFixed(2)} kips`;
+      document.getElementById("maximum-shear").textContent = `${Math.abs(maximumShear).toFixed(2)} kips`;
+      document.getElementById("maximum-moment").textContent = `${Math.abs(maximumMoment).toFixed(2)} kip-ft`;
+      document.querySelector("#maximum-shear").nextElementSibling.textContent = `At ${maximumShearPosition.toFixed(2)} ft`;
+      document.querySelector("#maximum-moment").nextElementSibling.textContent = `At ${maximumMomentPosition.toFixed(2)} ft`;
+      document.querySelector("#left-reaction").nextElementSibling.textContent = isCantilever ? "Vertical reaction" : "At 0.00 ft";
+      document.querySelector("#right-reaction").nextElementSibling.textContent = isCantilever ? "At fixed end" : `At ${span.toFixed(2)} ft`;
+      document.getElementById("fixed-end-force").textContent = isCantilever ? `${fixedMoment.toFixed(2)} kip-ft` : "—";
+      document.getElementById("fixed-end-detail").textContent = isCantilever ? "Fixed-end moment" : "Simply supported";
+
+      renderPlot("shear-plot", shearValues, "kips", "#ff5daf");
+      renderPlot("moment-plot", momentValues, "kip-ft", "#72b7ff");
+      updateDeflectionAndChecks(span, momentValues, isCantilever);
+      updateBeamDiagram(span, pointLoads, uniformLoads, isCantilever);
+    }
+
+    function updateDeflectionAndChecks(span, momentValues, isCantilever) {
+      const E = Number(document.getElementById("elastic-modulus").value);
+      const I = Number(document.getElementById("inertia").value);
+      const S = Number(document.getElementById("section").value);
+      const allowableStress = Number(document.getElementById("allowable").value);
+
+      const dx = 0.02;
+      const rawMoment = (x) => {
+        const exact = momentValues.find((point) => Math.abs(point.x - x) < 0.0001);
+        if (exact) return exact.value;
+        let low = 0;
+        let high = momentValues.length - 1;
+        while (low <= high) {
+          const middle = Math.floor((low + high) / 2);
+          if (momentValues[middle].x < x) low = middle + 1;
+          else high = middle - 1;
+        }
+        const upperIndex = Math.max(low, 1);
+        const lower = momentValues[upperIndex - 1];
+        const upper = momentValues[upperIndex];
+        if (!upper) return momentValues.at(-1)?.value || 0;
+        const fraction = (x - lower.x) / (upper.x - lower.x);
+        return lower.value + fraction * (upper.value - lower.value);
+      };
+
+      const EI = E * I / 144;
+      const stepCount = Math.round(span / dx);
+      const step = span / stepCount;
+      const slopePoints = [0];
+      const rawDeflectionPoints = [{ x: 0, value: 0 }];
+      let slope = 0;
+      let previousMoment = rawMoment(0);
+
+      for (let i = 1; i <= stepCount; i++) {
+        const x = i * step;
+        const moment = rawMoment(x);
+        slope += (previousMoment + moment) / 2 * step / EI;
+        previousMoment = moment;
+        slopePoints.push(slope);
+      }
+
+      if (isCantilever) {
+        let displacement = 0;
+        let previousSlope = slopePoints[0];
+        for (let i = 1; i <= stepCount; i++) {
+          const currentSlope = slopePoints[i];
+          displacement += (previousSlope + currentSlope) / 2 * step * 12;
+          previousSlope = currentSlope;
+          rawDeflectionPoints.push({ x: i * step, value: displacement });
+        }
+      } else {
+        let displacement = 0;
+        let previousSlope = slopePoints[0];
+        for (let i = 1; i <= stepCount; i++) {
+          const x = i * step;
+          const currentSlope = slopePoints[i];
+          displacement += (previousSlope + currentSlope) / 2 * step;
+          previousSlope = currentSlope;
+          rawDeflectionPoints.push({ x, value: displacement * 12 });
+        }
+
+        const rawEndDeflection = rawDeflectionPoints.at(-1).value;
+        rawDeflectionPoints.forEach((point) => {
+          point.value -= rawEndDeflection * point.x / span;
+        });
+      }
+
+      let maximumDeflection = 0;
+      let maximumDeflectionPosition = 0;
+      rawDeflectionPoints.forEach((point) => {
+        if (Math.abs(point.value) > Math.abs(maximumDeflection)) {
+          maximumDeflection = point.value;
+          maximumDeflectionPosition = point.x;
+        }
+      });
+
+      const momentCard = document.getElementById("maximum-moment");
+      const maximumMoment = Number.parseFloat(momentCard.textContent);
+      const bendingStress = maximumMoment * 12 / S;
+      const deflectionLimit = span * 12 / 360;
+      const bendingPass = bendingStress <= allowableStress;
+      const deflectionPass = Math.abs(maximumDeflection) <= deflectionLimit;
+
+      document.getElementById("maximum-deflection").textContent = `${maximumDeflection.toFixed(3)} in`;
+      document.getElementById("maximum-deflection-location").textContent = `At ${maximumDeflectionPosition.toFixed(2)} ft`;
+      document.getElementById("bending-stress").textContent = `${bendingStress.toFixed(2)} ksi`;
+      document.getElementById("allowable-stress").textContent = `Allowable: ${allowableStress.toFixed(2)} ksi`;
+      document.getElementById("deflection-limit").textContent = `${deflectionLimit.toFixed(3)} in`;
+
+      const bendingCheck = document.getElementById("bending-check");
+      bendingCheck.textContent = bendingPass ? "PASS" : "FAIL";
+      bendingCheck.style.background = bendingPass ? "#63ddaa" : "#ff9f43";
+
+      const deflectionCheck = document.getElementById("deflection-check");
+      deflectionCheck.textContent = deflectionPass ? "PASS" : "FAIL";
+      deflectionCheck.style.background = deflectionPass ? "#63ddaa" : "#ff9f43";
+
+      renderPlot("deflection-plot", rawDeflectionPoints, "in", "#ff9f43");
+    }
+
+    function renderPlot(svgId, points, unit, color) {
+      const svg = document.getElementById(svgId);
+      const title = unit === "kips" ? "Shear diagram" : "Moment diagram";
+      const values = points.map((point) => point.value);
+      const maxAbs = Math.max(...values.map(Math.abs), 0.001);
+      const left = 35;
+      const right = 280;
+      const top = 20;
+      const bottom = 200;
+      const zero = 110;
+      const span = points.at(-1)?.x || 1;
+      const polyline = points.map((point) => {
+        const x = left + (point.x / span) * (right - left);
+        const y = zero - (point.value / maxAbs) * (zero - top - 15);
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(" ");
+
+      svg.innerHTML = `
+        <line x1="${left}" y1="${zero}" x2="${right}" y2="${zero}" stroke="#241438" stroke-width="1.5"/>
+        <line x1="${left}" y1="${top}" x2="${left}" y2="${bottom}" stroke="#241438" stroke-width="1.5"/>
+        <polyline points="${polyline}" fill="none" stroke="${color}" stroke-width="5"/>
+        <g fill="#241438" font-family="Arial, sans-serif" font-size="11">
+          <text x="${left}" y="${bottom + 15}" text-anchor="middle">0</text>
+          <text x="${(left + right) / 2}" y="${bottom + 15}" text-anchor="middle">${(span / 2).toFixed(1)} ft</text>
+          <text x="${right}" y="${bottom + 15}" text-anchor="middle">${span.toFixed(1)} ft</text>
+          <text x="${left + 6}" y="${top + 18}">${title}</text>
+          <text x="${right - 3}" y="${top + 18}" text-anchor="end">${unit}</text>
+        </g>`;
+      svg.setAttribute("aria-label", `${title} in ${unit}`);
+    }
+
+    function updateBeamDiagram(span, pointLoads, uniformLoads, isCantilever) {
+      const svg = document.getElementById("beam-diagram");
+      const existingLabels = svg.querySelectorAll("[data-updated-label]");
+      existingLabels.forEach((label) => label.remove());
+      document.getElementById("left-support-circle").style.display = isCantilever ? "none" : "";
+      document.getElementById("right-support-triangle").style.display = isCantilever ? "none" : "";
+      let fixedSupport = svg.querySelector("#cantilever-fixed-support");
+      if (!fixedSupport) {
+        fixedSupport = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        fixedSupport.setAttribute("id", "cantilever-fixed-support");
+        fixedSupport.setAttribute("x", "48");
+        fixedSupport.setAttribute("y", "78");
+        fixedSupport.setAttribute("width", "22");
+        fixedSupport.setAttribute("height", "36");
+        fixedSupport.setAttribute("fill", "#72b7ff");
+        fixedSupport.setAttribute("stroke", "#241438");
+        fixedSupport.setAttribute("stroke-width", "3");
+        svg.appendChild(fixedSupport);
+      }
+      fixedSupport.style.display = isCantilever ? "" : "none";
+      const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      group.setAttribute("data-updated-label", "true");
+      group.setAttribute("fill", "#241438");
+      group.setAttribute("font-family", "Arial, sans-serif");
+      group.setAttribute("font-size", "13");
+      group.setAttribute("text-anchor", "middle");
+      const texts = [];
+      texts.push([380, 163, `${span.toFixed(2)} ft span`]);
+      pointLoads.forEach((load) => {
+        const x = 70 + (load.position / span) * 620;
+        texts.push([x, 20, `${load.magnitude.toFixed(2)} kips`]);
+      });
+      uniformLoads.forEach((load) => {
+        const x = 70 + (((load.start + load.end) / 2) / span) * 620;
+        texts.push([x, 58, `${load.magnitude.toFixed(2)} kip/ft`]);
+      });
+      texts.forEach(([x, y, text]) => {
+        const node = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        node.setAttribute("x", x);
+        node.setAttribute("y", y);
+        node.textContent = text;
+        group.appendChild(node);
+      });
+      svg.appendChild(group);
+      svg.setAttribute("aria-label", `${isCantilever ? "Cantilever" : "Simply supported"} beam with ${pointLoads.length} point loads and ${uniformLoads.length} uniform loads`);
     }
 
     function renumberLoads() {
@@ -1021,10 +1326,8 @@
     updateOutputVisibility();
     randomizeRoundedCorners();
     randomizeTextFonts();
-    setInterval(() => {
-      randomizeTextFonts();
-      randomizeRoundedCorners();
-    }, 5000);
+    setInterval(randomizeTextFonts, 1000);
+    setInterval(randomizeRoundedCorners, 5000);
   </script>
 </body>
 </html>

@@ -9,3 +9,6 @@
 - 2026-11-18: Flipped the right beam support so the triangle points toward the beam and added randomized individual corner radii to the mockup panels and controls. No calculations were implemented; completed successfully.
 - 2026-11-18: Added randomized per-letter fonts to app text and made text and panel corner radii reset every five seconds. No calculations were implemented; completed successfully.
 - 2026-11-18: Implemented stage 2 controls and validation in index.html: support and span fields, dynamic point/distributed loads, add/remove actions, reset, calculate, member properties, adjacent field errors, automatic validation, and hiding stale outputs. No beam calculations were implemented; completed successfully.
+- 2026-11-18: Changed the random text-font reset interval to every second and fixed nested result-label spans so result text stays left-to-right. Completed successfully.
+- 2026-11-18: Implemented stage 3 static analysis in index.html for reactions, combined point/distributed loads, shear, moment, beam support diagrams, and dynamic shear/moment plots. No deflection or strength calculations were added; completed successfully.
+- 2026-11-18: Implemented stage 4 deflection and strength checks in index.html: numerical moment-curvature deflection, bending stress, L/360 limit, pass/fail badges, and a dynamic deflection plot. Completed successfully.
