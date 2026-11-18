@@ -20,6 +20,27 @@
     * { box-sizing: border-box; }
     [hidden] { display: none !important; }
 
+    .spark {
+      position: fixed;
+      z-index: 1000;
+      width: 9px;
+      height: 9px;
+      border: 2px solid var(--ink);
+      pointer-events: none;
+      animation: spark-fly 900ms ease-out forwards;
+    }
+
+    @keyframes spark-fly {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--spark-x)), calc(-50% + var(--spark-y))) scale(0.15) rotate(540deg);
+      }
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -609,25 +630,15 @@
               <g fill="#63ddaa" stroke="#241438" stroke-width="3">
                 <rect x="70" y="82" width="620" height="26" rx="13"/>
               </g>
-              <g fill="none" stroke="#ff5daf" stroke-width="3">
-                <line x1="70" y1="68" x2="690" y2="68"/>
-                <path d="M70 68 l0 14 M130 68 l0 14 M190 68 l0 14 M250 68 l0 14 M310 68 l0 14 M370 68 l0 14 M430 68 l0 14 M490 68 l0 14 M550 68 l0 14 M610 68 l0 14 M690 68 l0 14"/>
-              </g>
               <g fill="#241438" font-family="Arial, sans-serif" font-size="14" text-anchor="middle">
-                <text x="380" y="58">1.00 kip/ft</text>
-                <text x="380" y="163">20.00 ft span</text>
                 <text x="70" y="158">RA</text>
                 <text x="690" y="158">RB</text>
-              </g>
-              <g fill="#ff9f43" stroke="#241438" stroke-width="3">
-                <path d="M380 25 L380 82" marker-end="url(#arrow)"/>
               </g>
               <defs>
                 <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
                   <path d="M0 0 L10 5 L0 10 Z" fill="#241438"/>
                 </marker>
               </defs>
-              <text x="380" y="20" text-anchor="middle" fill="#241438" font-family="Arial, sans-serif" font-size="14">4.00 kips at 8.00 ft</text>
             </svg>
           </div>
           <div class="legend">
@@ -1156,25 +1167,90 @@
       group.setAttribute("font-family", "Arial, sans-serif");
       group.setAttribute("font-size", "13");
       group.setAttribute("text-anchor", "middle");
-      const texts = [];
-      texts.push([380, 163, `${span.toFixed(2)} ft span`]);
+
+      const spanLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      spanLabel.setAttribute("x", "380");
+      spanLabel.setAttribute("y", "163");
+      spanLabel.textContent = `${span.toFixed(2)} ft span`;
+      group.appendChild(spanLabel);
+
       pointLoads.forEach((load) => {
+        if (load.magnitude === 0) return;
         const x = 70 + (load.position / span) * 620;
-        texts.push([x, 20, `${load.magnitude.toFixed(2)} kips`]);
+        const arrow = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        arrow.setAttribute("d", `M${x} 25 L${x} 82`);
+        arrow.setAttribute("fill", "#ff9f43");
+        arrow.setAttribute("stroke", "#241438");
+        arrow.setAttribute("stroke-width", "3");
+        arrow.setAttribute("marker-end", "url(#arrow)");
+        group.appendChild(arrow);
+
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute("x", x);
+        label.setAttribute("y", "18");
+        label.textContent = `${load.magnitude.toFixed(2)} kips at ${load.position.toFixed(2)} ft`;
+        group.appendChild(label);
       });
+
       uniformLoads.forEach((load) => {
-        const x = 70 + (((load.start + load.end) / 2) / span) * 620;
-        texts.push([x, 58, `${load.magnitude.toFixed(2)} kip/ft`]);
-      });
-      texts.forEach(([x, y, text]) => {
-        const node = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        node.setAttribute("x", x);
-        node.setAttribute("y", y);
-        node.textContent = text;
-        group.appendChild(node);
+        if (load.magnitude === 0 || load.end <= load.start) return;
+        const startX = 70 + (load.start / span) * 620;
+        const endX = 70 + (load.end / span) * 620;
+
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", startX);
+        line.setAttribute("y1", "68");
+        line.setAttribute("x2", endX);
+        line.setAttribute("y2", "68");
+        line.setAttribute("fill", "none");
+        line.setAttribute("stroke", "#ff5daf");
+        line.setAttribute("stroke-width", "3");
+        group.appendChild(line);
+
+        const tickCount = Math.max(2, Math.round((endX - startX) / 50));
+        for (let i = 0; i <= tickCount; i++) {
+          const x = startX + (endX - startX) * i / tickCount;
+          const tick = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          tick.setAttribute("x1", x);
+          tick.setAttribute("y1", "68");
+          tick.setAttribute("x2", x);
+          tick.setAttribute("y2", "82");
+          tick.setAttribute("stroke", "#ff5daf");
+          tick.setAttribute("stroke-width", "3");
+          group.appendChild(tick);
+        }
+
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute("x", (startX + endX) / 2);
+        label.setAttribute("y", "58");
+        label.textContent = `${load.magnitude.toFixed(2)} kip/ft from ${load.start.toFixed(2)} to ${load.end.toFixed(2)} ft`;
+        group.appendChild(label);
       });
       svg.appendChild(group);
       svg.setAttribute("aria-label", `${isCantilever ? "Cantilever" : "Simply supported"} beam with ${pointLoads.length} point loads and ${uniformLoads.length} uniform loads`);
+    }
+
+    function launchSparks() {
+      const colors = ["#ff5daf", "#ffe66d", "#63ddaa", "#72b7ff", "#9a74ff", "#ff9f43"];
+      const shapes = ["50%", "12%", "50% 12%", "0"];
+      const button = document.getElementById("calculate-button");
+      const rect = button.getBoundingClientRect();
+      const originX = rect.left + rect.width / 2;
+      const originY = rect.top + rect.height / 2;
+
+      for (let i = 0; i < 90; i++) {
+        const spark = document.createElement("span");
+        spark.className = "spark";
+        spark.style.left = `${originX + (Math.random() - 0.5) * rect.width}px`;
+        spark.style.top = `${originY + (Math.random() - 0.5) * rect.height}px`;
+        spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+        spark.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)];
+        spark.style.setProperty("--spark-x", `${(Math.random() - 0.5) * 520}px`);
+        spark.style.setProperty("--spark-y", `${(Math.random() - 0.65) * 520}px`);
+        spark.style.animationDelay = `${Math.random() * 180}ms`;
+        document.body.appendChild(spark);
+        spark.addEventListener("animationend", () => spark.remove());
+      }
     }
 
     function renumberLoads() {
@@ -1236,7 +1312,10 @@
 
     document.getElementById("add-point-load").addEventListener("click", addPointLoad);
     document.getElementById("add-uniform-load").addEventListener("click", addUniformLoad);
-    document.getElementById("calculate-button").addEventListener("click", updateOutputVisibility);
+    document.getElementById("calculate-button").addEventListener("click", () => {
+      updateOutputVisibility();
+      launchSparks();
+    });
     document.getElementById("reset-button").addEventListener("click", () => {
       document.getElementById("support").value = "Simply supported";
       document.getElementById("span").value = "20.00";

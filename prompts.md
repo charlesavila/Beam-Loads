@@ -12,3 +12,5 @@
 - 2026-11-18: Changed the random text-font reset interval to every second and fixed nested result-label spans so result text stays left-to-right. Completed successfully.
 - 2026-11-18: Implemented stage 3 static analysis in index.html for reactions, combined point/distributed loads, shear, moment, beam support diagrams, and dynamic shear/moment plots. No deflection or strength calculations were added; completed successfully.
 - 2026-11-18: Implemented stage 4 deflection and strength checks in index.html: numerical moment-curvature deflection, bending stress, L/360 limit, pass/fail badges, and a dynamic deflection plot. Completed successfully.
+- 2026-11-18: Removed duplicated static load and span text from the beam diagram and added a colorful full-page spark burst when Calculate is clicked. Completed successfully.
+- 2026-11-18: Made beam point and uniform load arrows render only for active loads and follow entered positions/ranges. Changed Calculate sparks to originate from the Calculate button. Completed successfully.
