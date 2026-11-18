@@ -14,3 +14,5 @@
 - 2026-11-18: Implemented stage 4 deflection and strength checks in index.html: numerical moment-curvature deflection, bending stress, L/360 limit, pass/fail badges, and a dynamic deflection plot. Completed successfully.
 - 2026-11-18: Removed duplicated static load and span text from the beam diagram and added a colorful full-page spark burst when Calculate is clicked. Completed successfully.
 - 2026-11-18: Made beam point and uniform load arrows render only for active loads and follow entered positions/ranges. Changed Calculate sparks to originate from the Calculate button. Completed successfully.
+- 2026-11-18: Removed the deflection diagram card and SVG while preserving deflection values and the deflection check in the result summary. Completed successfully.
+- 2026-11-18: Started and completed stage 5 layout polishing: expanded the shear and moment diagrams into two equal columns to fill the space left by the removed deflection plot. Completed responsive verification; no external dependencies or build tools were added.
